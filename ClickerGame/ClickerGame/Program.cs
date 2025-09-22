@@ -123,4 +123,72 @@ namespace ClickerConsole
         }
     }
 
+    // -------------------------
+    // PowerUpManager (usa Timer con delegados)
+    // -------------------------
+    public class PowerUpManager
+    {
+        private readonly ClickableCrystal _crystal;
+        private Timer _doubleTimer;
+        private bool _doubleActive = false;
+
+        public PowerUpManager(ClickableCrystal crystal)
+        {
+            _crystal = crystal;
+        }
+
+        public void BuyDoublePoints()
+        {
+            const long cost = 50;
+            if (!GameManager.Instance.TrySpend(cost))
+            {
+                GameManager.Instance.Notify("No tienes suficientes puntos para Double (50).");
+                return;
+            }
+
+            ActivateDoublePoints(20000, () =>
+            {
+                GameManager.Instance.Notify("Double Points finalizó.");
+            });
+            GameManager.Instance.Notify("Double Points activado por 20s.");
+        }
+
+        private void ActivateDoublePoints(int durationMs, Action onComplete)
+        {
+            if (_doubleActive)
+            {
+                GameManager.Instance.Notify("Double ya estaba activo. Reiniciando duración...");
+                _doubleTimer?.Dispose();
+            }
+            else
+            {
+                _crystal.ScoreStrategy = new DoubleScore();
+                _doubleActive = true;
+                GameManager.Instance.Notify("Estrategia DoubleScore activada.");
+                GameManager.Instance.NotifyPowerUp("Double Activated");
+            }
+
+            _doubleTimer = new Timer(_ =>
+            {
+                _crystal.ScoreStrategy = new NormalScore();
+                _doubleActive = false;
+                onComplete?.Invoke();
+            }, null, durationMs, Timeout.Infinite);
+        }
+
+        public void BuyPPS()
+        {
+            const long cost = 30;
+            if (!GameManager.Instance.TrySpend(cost))
+            {
+                GameManager.Instance.Notify("No tienes suficientes puntos para PPS (+1).");
+                return;
+            }
+
+            GameManager.Instance.IncreasePPS(1);
+            GameManager.Instance.Notify("Has comprado +1 PPS (permanente).");
+            GameManager.Instance.NotifyPowerUp("PPS Bought");
+        }
+    }
+
     
