@@ -36,6 +36,9 @@ namespace ClickerConsole
         public static GameManager Instance => _lazy.Value;
 
         private long _score;
+
+
+
         private int _pointsPerSecond;
         private Timer _ppsTimer;
 
