@@ -191,4 +191,53 @@ namespace ClickerConsole
         }
     }
 
+    // -------------------------
+    // UI en consola (Observer)
+    // -------------------------
+    public class ConsoleUI
+    {
+        public ConsoleUI()
+        {
+            GameManager.Instance.OnScoreChanged += ScoreChanged;
+            GameManager.Instance.OnNotification += OnNotification;
+            GameManager.Instance.OnPowerUpActivated += OnPowerUp;
+        }
+
+        private void ScoreChanged(long newScore)
+        {
+            Console.Title = $"Score: {newScore}";
+        }
+
+        private void OnNotification(string msg)
+        {
+            Console.WriteLine($"[NOTIF] {msg}");
+        }
+
+        private void OnPowerUp(string msg)
+        {
+            Console.WriteLine($"[POWERUP] {msg}");
+        }
+
+        public void PrintWelcome()
+        {
+            Console.WriteLine("=== CLICKER CONSOLE ===");
+            Console.WriteLine("Comandos disponibles:");
+            Console.WriteLine("  c / click    -> hacer click");
+            Console.WriteLine("  buy double   -> comprar Double Score (50 pts, 20s)");
+            Console.WriteLine("  buy pps      -> comprar +1 PPS permanente (30 pts)");
+            Console.WriteLine("  status       -> ver estado");
+            Console.WriteLine("  help         -> mostrar ayuda");
+            Console.WriteLine("  exit         -> salir");
+        }
+
+        public void PrintStatus(ClickableCrystal crystal)
+        {
+            Console.WriteLine("--- ESTADO ---");
+            Console.WriteLine($"Score: {GameManager.Instance.Score}");
+            Console.WriteLine($"PPS: {GameManager.Instance.PointsPerSecond}");
+            Console.WriteLine($"Estrategia actual: {crystal.ScoreStrategy.GetType().Name}");
+            Console.WriteLine("----------------");
+        }
+    }
+
     
