@@ -240,4 +240,63 @@ namespace ClickerConsole
         }
     }
 
-    
+    // -------------------------
+    // Programa principal
+    // -------------------------
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var crystal = new ClickableCrystal();
+            var ui = new ConsoleUI();
+            var powerUpManager = new PowerUpManager(crystal);
+
+            ui.PrintWelcome();
+            bool running = true;
+
+            while (running)
+            {
+                Console.Write("> ");
+                var input = Console.ReadLine()?.Trim().ToLowerInvariant();
+
+                switch (input)
+                {
+                    case "c":
+                    case "click":
+                        crystal.Click();
+                        break;
+
+                    case "buy double":
+                        powerUpManager.BuyDoublePoints();
+                        break;
+
+                    case "buy pps":
+                        powerUpManager.BuyPPS();
+                        break;
+
+                    case "status":
+                        ui.PrintStatus(crystal);
+                        break;
+
+                    case "help":
+                        ui.PrintWelcome();
+                        break;
+
+                    case "exit":
+                        running = false;
+                        break;
+
+                    case "":
+                    case null:
+                        break;
+
+                    default:
+                        Console.WriteLine("Comando desconocido. Escribe 'help' para ver opciones.");
+                        break;
+                }
+            }
+
+            Console.WriteLine("Juego terminado. ¡Gracias por jugar!");
+        }
+    }
+}
