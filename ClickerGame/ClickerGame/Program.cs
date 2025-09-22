@@ -108,4 +108,19 @@ namespace ClickerConsole
         }
     }
 
+    // -------------------------
+    // Objeto clickeable (usa Strategy)
+    // -------------------------
+    public class ClickableCrystal
+    {
+        public IScoreStrategy ScoreStrategy { get; set; } = new NormalScore();
+
+        public void Click()
+        {
+            int pts = ScoreStrategy.CalculatePoints(1);
+            GameManager.Instance.AddScore(pts);
+            GameManager.Instance.Notify($"Click: +{pts}");
+        }
+    }
+
     
