@@ -300,3 +300,6 @@ namespace ClickerConsole
         }
     }
 }
+
+
+//El programa funciona Melo
