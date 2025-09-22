@@ -1,3 +1,3 @@
 ## Taller 2 Scripting 
 
-### Investigación 
+### Versión en C# del programa
