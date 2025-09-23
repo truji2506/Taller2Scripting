@@ -1,54 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-public class Singleton<T> : MonoBehaviour where T : Component
+public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
-    private static bool isQuitting = false; // Bandera para saber si la aplicación se está cerrando
+    private static bool _isQuitting = false;
+    private static readonly object _lock = new object();
 
     public static T Instance
     {
         get
         {
-            // Si la aplicación se está cerrando, no crees un nuevo objeto, solo devuelve null.
-            if (isQuitting)
-            {
-                Debug.LogWarning($"[Singleton] Instance '{typeof(T)}' already destroyed. Returning null.");
-                return null;
-            }
+            if (_isQuitting) return null; // 👈 Ya está cerrando, devolvemos null sin warning
 
-            if (_instance == null)
+            lock (_lock)
             {
-                _instance = FindObjectOfType<T>();
                 if (_instance == null)
                 {
-                    GameObject obj = new GameObject(typeof(T).Name);
-                    _instance = obj.AddComponent<T>();
+                    _instance = (T)FindObjectOfType(typeof(T));
+
+                    if (_instance == null)
+                    {
+                        GameObject singleton = new GameObject();
+                        _instance = singleton.AddComponent<T>();
+                        singleton.name = typeof(T).ToString() + " (Singleton)";
+                        DontDestroyOnLoad(singleton);
+                    }
                 }
+                return _instance;
             }
-            return _instance;
         }
     }
 
-    public virtual void Awake()
+    protected virtual void Awake()
     {
         if (_instance == null)
         {
             _instance = this as T;
-            DontDestroyOnLoad(this.gameObject); // Mantenemos esto para que sobreviva entre escenas
+            DontDestroyOnLoad(gameObject);
         }
         else if (_instance != this)
         {
             Destroy(gameObject);
         }
     }
-    
-    // Este método de Unity se llama automáticamente cuando el usuario cierra la aplicación
-    // o detiene el modo de juego en el editor.
-    private void OnApplicationQuit()
+
+    protected virtual void OnApplicationQuit()
     {
-        isQuitting = true;
+        _isQuitting = true; // 👈 Marcamos que la app está cerrando
     }
 }
