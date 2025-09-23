@@ -789,7 +789,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 576831625}
-  powerUpButton: {fileID: 0}
+  powerUpButton: {fileID: 1574296589}
 --- !u!1 &1021846293
 GameObject:
   m_ObjectHideFlags: 0

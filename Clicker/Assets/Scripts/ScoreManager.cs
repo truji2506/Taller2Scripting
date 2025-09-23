@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System;
-
+using UnityEngine;
 
 public class ScoreManager : Singleton<ScoreManager>
 {
@@ -35,7 +32,7 @@ public class ScoreManager : Singleton<ScoreManager>
     public void AddPoints(int amount)
     {
         Score += amount;
-        Clicks += 1; // cada vez que sumas puntos, también cuenta un click
+        Clicks += 1;
     }
 
     public void ApplyEffect(IEffect effect)
