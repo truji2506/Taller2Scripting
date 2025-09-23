@@ -7,7 +7,10 @@ using System;
 public class ScoreManager : Singleton<ScoreManager>
 {
     public event Action<int> OnScoreChanged;
+    public event Action<int> OnClicksChanged;
+
     private int _score;
+    private int _clicks;
 
     public int Score
     {
@@ -19,9 +22,20 @@ public class ScoreManager : Singleton<ScoreManager>
         }
     }
 
+    public int Clicks
+    {
+        get => _clicks;
+        private set
+        {
+            _clicks = value;
+            OnClicksChanged?.Invoke(_clicks);
+        }
+    }
+
     public void AddPoints(int amount)
     {
         Score += amount;
+        Clicks += 1; // cada vez que sumas puntos, también cuenta un click
     }
 
     public void ApplyEffect(IEffect effect)

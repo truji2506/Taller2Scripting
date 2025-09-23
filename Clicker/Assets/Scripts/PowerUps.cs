@@ -13,7 +13,7 @@ public class DoublePointsPowerUp : IEffect
 {
     public int ApplyEffect(int currentScore)
     {
-        return currentScore * 2;
+        return currentScore + 2;
     }
 }
 
