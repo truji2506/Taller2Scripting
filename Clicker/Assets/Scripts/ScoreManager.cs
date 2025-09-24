@@ -7,9 +7,9 @@ using UnityEngine;
 /// </summary>
 public class ScoreManager : Singleton<ScoreManager>
 {
-    // 🔔 Eventos para notificar cambios en score y clics
-    public event Action<int> OnScoreChanged;
-    public event Action<int> OnClicksChanged;
+    // 
+    public event Action<int> OnScoreChanged; // Patrones Observer y Event-driven
+    public event Action<int> OnClicksChanged; // Patrones Observer y Event-driven
 
     // 🔢 Campos privados
     private int _score;
@@ -25,7 +25,7 @@ public class ScoreManager : Singleton<ScoreManager>
         private set
         {
             _score = value;
-            OnScoreChanged?.Invoke(_score);
+            OnScoreChanged?.Invoke(_score); // cuando cambia el score, se notifica a los suscriptores.
         }
     }
 
@@ -39,7 +39,7 @@ public class ScoreManager : Singleton<ScoreManager>
         private set
         {
             _clicks = value;
-            OnClicksChanged?.Invoke(_clicks);
+            OnClicksChanged?.Invoke(_clicks); // Cuando cambia el número de clics, se notifica a los suscriptores.
         }
     }
 
