@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
             powerUpButton.interactable = false;
     }
 
+    // Usamos OnEnable y OnDisable para suscribirnos y desuscribirnos de eventos
+    // UIManager se suscribe a los eventos de ScoreManager
     private void OnEnable()
     {
         if (ScoreManager.Instance != null)
@@ -30,7 +32,7 @@ public class UIManager : MonoBehaviour
     {
         if (ScoreManager.Instance != null)
         {
-            ScoreManager.Instance.OnScoreChanged -= UpdateScoreText;
+            ScoreManager.Instance.OnScoreChanged -= UpdateScoreText; // -= Evita referencias colgantes cuando el objeto se destruye        
         }
     }
 
